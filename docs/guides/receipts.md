@@ -9,7 +9,7 @@ To generate complete receipts, labels, and badges, `purrint` provides raster com
 Below is a complete receipt layout composed using `stack()`, `render_text()`, `render_separator()`, and `render_qr()`:
 
 <p align="center">
-  <img src="../images/receipt_sample.png" alt="Generated receipt preview" width="384">
+  <img src="../../images/receipt_sample.png" alt="Generated receipt preview" width="384">
   <br>
   <em>Rendered receipt output from virtual simulator (384 dots width)</em>
 </p>

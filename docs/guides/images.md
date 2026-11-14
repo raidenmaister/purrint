@@ -9,7 +9,7 @@ Thermal printers reproduce graphics using single-color heating elements arranged
 Below is an unmodified input photograph (Public Domain / CC0):
 
 <p align="center">
-  <img src="../images/cat_original.jpg" alt="Source photograph" width="384">
+  <img src="../../images/cat_original.jpg" alt="Source photograph" width="384">
   <br>
   <em>Input source: 384 px wide continuous-tone photograph</em>
 </p>
@@ -24,7 +24,7 @@ Below is an unmodified input photograph (Public Domain / CC0):
 Default algorithm. Error-diffusion dither providing smooth gradients and natural transitions for general photography.
 
 <p align="center">
-  <img src="../images/cat_floyd.png" alt="Floyd-Steinberg Dither" width="384">
+  <img src="../../images/cat_floyd.png" alt="Floyd-Steinberg Dither" width="384">
 </p>
 
 ```python
@@ -37,7 +37,7 @@ printer.print_image("cat.jpg", dither="floyd")
 Developed by Bill Atkinson at Apple Computer. Diffuses only 75% of the error, preserving cleaner highlights and higher localized contrast. Recommended for small portraits and detailed line subjects.
 
 <p align="center">
-  <img src="../images/cat_atkinson.png" alt="Atkinson Dither" width="384">
+  <img src="../../images/cat_atkinson.png" alt="Atkinson Dither" width="384">
 </p>
 
 ```python
@@ -50,7 +50,7 @@ printer.print_image("cat.jpg", dither="atkinson", contrast=15)
 An 8x8 ordered threshold matrix producing a uniform geometric cross-hatch pattern. Extremely fast and resistant to paper-feed banding artifacts.
 
 <p align="center">
-  <img src="../images/cat_bayer.png" alt="Bayer Ordered Dither" width="384">
+  <img src="../../images/cat_bayer.png" alt="Bayer Ordered Dither" width="384">
 </p>
 
 ```python
@@ -63,7 +63,7 @@ printer.print_image("cat.jpg", dither="bayer")
 Simulates traditional newspaper rotary press dot clustering. Excellent readability under low-contrast paper stocks.
 
 <p align="center">
-  <img src="../images/cat_halftone.png" alt="Halftone Dither" width="384">
+  <img src="../../images/cat_halftone.png" alt="Halftone Dither" width="384">
 </p>
 
 ```python
@@ -76,7 +76,7 @@ printer.print_image("cat.jpg", dither="halftone")
 Direct binary thresholding without error distribution. Intended for black-and-white logos, icons, diagrams, and barcodes.
 
 <p align="center">
-  <img src="../images/cat_threshold.png" alt="Threshold Dither" width="384">
+  <img src="../../images/cat_threshold.png" alt="Threshold Dither" width="384">
 </p>
 
 ```python
