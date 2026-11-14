@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "purrint"
+dynamic = ["version"]
+description = "Print images, text and QR codes on cheap Bluetooth thermal 'cat' printers (MX10, MX06, GB01-style, MXW01 and 100+ more) from Python."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "raidenmaister" }]
+keywords = [
+    "thermal printer", "cat printer", "bluetooth", "ble", "mx10", "mx06", "mxw01",
+    "mini printer", "receipt", "label", "pocket printer", "bleak",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Printing",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Typing :: Typed",
+]
+dependencies = [
+    "bleak>=0.22",
+    "Pillow>=9.5",
+]
+
+[project.optional-dependencies]
+qr = ["qrcode>=7.4"]
+dev = ["pytest>=7", "qrcode>=7.4"]
+
+[project.scripts]
+purrint = "purrint.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/raidenmaister/purrint"
+Repository = "https://github.com/raidenmaister/purrint"
+Issues = "https://github.com/raidenmaister/purrint/issues"
+Documentation = "https://github.com/raidenmaister/purrint#readme"
+
+[tool.setuptools.dynamic]
+version = { attr = "purrint._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+purrint = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
