@@ -1,9 +1,9 @@
 <p align="right">
-  <a href="README.es.md"><img src="https://img.shields.io/badge/Language-%F0%9F%87%AA%F0%9F%87%B8%20Espa%C3%B1ol-238636?style=flat-square" alt="Español"></a>
+  <a href="https://github.com/raidenmaister/purrint/blob/main/README.es.md"><img src="https://img.shields.io/badge/Language-%F0%9F%87%AA%F0%9F%87%B8%20Espa%C3%B1ol-238636?style=flat-square" alt="Español"></a>
 </p>
 
 <p align="center">
-  <img src="docs/logo.svg" alt="purrint logo" width="360">
+  <img src="https://raw.githubusercontent.com/raidenmaister/purrint/main/docs/logo.svg" alt="purrint logo" width="360">
 </p>
 
 <h3 align="center">
