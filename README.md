@@ -1,59 +1,102 @@
-# purrint 🐱🖨️
+<p align="right">
+  <a href="README.es.md"><img src="https://img.shields.io/badge/Language-%F0%9F%87%AA%F0%9F%87%B8%20Espa%C3%B1ol-238636?style=flat-square" alt="Español"></a>
+</p>
 
-**Print photos, text and QR codes on cheap Bluetooth thermal "cat" printers from Python** – MX10, MX06,
-MX05, GB01-style, MXW01, X1, C17 and **107 advertised models** in total, on Windows, Linux and macOS.
+<p align="center">
+  <img src="docs/logo.svg" alt="purrint logo" width="360">
+</p>
+
+<h3 align="center">
+  Thermal Bluetooth Printer Driver and CLI for Python
+</h3>
+
+<p align="center">
+  <a href="https://pypi.org/project/purrint/"><img src="https://img.shields.io/pypi/v/purrint.svg" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/purrint/"><img src="https://img.shields.io/pypi/pyversions/purrint.svg" alt="Python versions"></a>
+  <a href="https://github.com/raidenmaister/purrint/actions/workflows/test.yml"><img src="https://github.com/raidenmaister/purrint/actions/workflows/test.yml/badge.svg" alt="Build Status"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://github.com/raidenmaister/purrint"><img src="https://img.shields.io/badge/types-typed-blue.svg" alt="Type Annotated"></a>
+</p>
+
+---
+
+**purrint** is an independent, clean-room Python library and command-line interface for communicating with low-cost Bluetooth Low Energy thermal printers (commonly marketed as pocket or cat printers: MX10, MX06, GB01-style, MXW01, and over 100 compatible models). It operates directly via BLE without vendor apps, accounts, or cloud services.
+
+## Installation
 
 ```bash
-pip install purrint          # add [qr] for QR codes:  pip install "purrint[qr]"
+pip install purrint
 ```
+
+To enable QR code generation, install with the optional `qr` extra:
+
+```bash
+pip install "purrint[qr]"
+```
+
+## Quickstart
 
 ```python
 import purrint
 
-with purrint.connect_sync() as printer:            # nearest supported printer
-    printer.print_image("photo.jpg")               # auto-rotated, dithered, sized to the paper
+with purrint.connect_sync() as printer:
+    printer.print_image("photo.jpg")
     printer.print_text("Hello from Python!", size=36, align="center")
 ```
 
-No vendor app, no account, no cloud. purrint talks to the printer directly over Bluetooth Low Energy.
-
----
-
 ## Features
 
-| | |
+| Capability | Description |
 |---|---|
-| 🔍 **Discovery** | Scan, identify the model by its Bluetooth name, or auto-detect the protocol of unknown clones. |
-| 🖼️ **Images** | Phone EXIF orientation, landscape photos turned 90° to use the paper length, brightness / contrast / gamma / sharpen / invert, 6 dithering algorithms, true **16-level grayscale** on V5X printers. |
-| 🔤 **Text** | System fonts or your own `.ttf`, word wrap, left/center/right, bold, monospace, underline, inverted. |
-| 🔳 **QR codes & rules** | QR with caption, solid/dashed/dotted separators, `stack()` to build receipts. |
-| 🔥 **Heat control** | `density` 1–7 mapped to each model's own tables, or raw `energy` (V5G) / `intensity` (V5X), print `speed` and `quality`. |
-| 🌡️ **Status** | Out of paper, cover open, overheated head (waits for it to cool), low battery, head temperature, battery %, firmware, serial, head type. |
-| ⏱️ **Real completion** | Waits until the paper has *physically* stopped, with flow control and a live head-position estimate for progress bars. |
-| 📄 **Paper** | Feed (in dots or mm), retract, cancel, copies with cool-down, batches of pictures. |
-| 🧪 **Simulator** | `connect_simulated("MX10")` – same API, no hardware; save exactly what would print. |
-| ⚙️ **APIs** | Async (`asyncio`), blocking (`connect_sync`, `quick_print`) and a CLI (`purrint ...`). |
+| **Discovery** | Scan for nearby devices, identify models by BLE advertised names, or probe protocols on unknown clones. |
+| **Image Processing** | Automatic EXIF orientation, 90-degree landscape rotation, brightness/contrast/gamma controls, 6 dithering algorithms, and 16-level grayscale support on V5X hardware. |
+| **Text Rendering** | System or custom TrueType fonts, word wrapping, alignment (left/center/right), bold, underline, monospace, and inverted styles. |
+| **Receipt Composition** | QR code rendering with captions, solid/dashed/dotted line separators, and stackable raster components. |
+| **Thermal Regulation** | Preset densities (1 to 7) mapped per model, raw energy/intensity overrides, and configurable print speed. |
+| **Hardware Telemetry** | Status monitoring for out-of-paper conditions, open cover, head temperature, battery level, firmware version, and serial number. |
+| **Print Verification** | Physical print-head progress estimation and flow control to wait until paper feeding completes. |
+| **Paper Management** | Feed in dots or millimeters, retraction, print cancellation, and multi-copy printing with cooling intervals. |
+| **Virtual Simulator** | Built-in software simulator (`connect_simulated`) for testing pipelines without physical hardware. |
+| **Interfaces** | Full `asyncio` API, blocking synchronous API (`connect_sync`), and a CLI tool (`purrint`). |
 
-## Command line
+## Command-Line Interface
+
+The package installs the `purrint` command:
 
 ```bash
-purrint scan                                  # printers in range
-purrint models                                # the 107 supported names
-purrint info                                  # firmware, serial, status, temperature
-purrint image photo.jpg holiday/*.jpg         # print pictures (landscape ones are rotated)
+# Discover printers in range
+purrint scan
+
+# List all 107 recognized hardware model names
+purrint models
+
+# Query hardware state and firmware details
+purrint info
+
+# Print one or multiple images
+purrint image photo.jpg holiday/*.jpg
+
+# Print images with custom dither and contrast
 purrint image photo.jpg --dither atkinson --density 5 --contrast 15
-purrint image photo.jpg --gray                # 16-level grayscale (V5X printers)
-purrint text "Shopping list:\n- milk\n- eggs" --size 30 --bold
-purrint qr https://example.com --caption "scan me"
+
+# Print text with formatting
+purrint text "Shopping list:\n- Milk\n- Eggs" --size 30 --bold
+
+# Print QR code with caption
+purrint qr https://example.com --caption "Scan to visit"
+
+# Advance paper feed
 purrint feed 100
-purrint text "test" --simulate preview.png    # no printer needed
+
+# Render to an image preview without physical hardware
+purrint text "Test receipt" --simulate preview.png
 ```
 
-Add `-p MX10` (name fragment) or `-p AA:BB:CC:DD:EE:FF` to choose a printer, `-v`/`-vv` for logs.
+Use `-p <NAME_OR_MAC>` to select a target device, and `-v` or `-vv` for verbose transport logging.
 
 ## Python API
 
-### Async
+### Asynchronous API
 
 ```python
 import asyncio
@@ -61,167 +104,119 @@ import purrint
 
 async def main():
     async with await purrint.connect("MX10") as printer:
-        print(printer.info.firmware, printer.status)
+        print(f"Firmware: {printer.info.firmware}, Status: {printer.status}")
 
         await printer.print_image(
             "photo.jpg",
-            density=5,            # 1 light .. 7 darkest
+            density=5,            # Thermal density: 1 (lightest) .. 7 (darkest)
             dither="floyd",       # floyd | atkinson | bayer | halftone | threshold
-            rotate="auto",        # landscape -> portrait; or 0/90/180/270
+            rotate="auto",        # Automatically rotate landscape photos
             contrast=10,
-            copies=2, cooldown=5, # rest the head between copies
-            on_progress=lambda p: print(p.phase, p.current_line, "/", p.lines),
+            copies=2,
+            cooldown=5,           # Rest interval in seconds between copies
+            on_progress=lambda p: print(f"{p.phase}: {p.current_line}/{p.lines}"),
         )
-        await printer.print_text("Thanks!", size=40, bold=True, align="center")
-        await printer.print_qr("https://example.com", caption="our web")
+
+        await printer.print_text("Thank you for your purchase!", size=36, bold=True, align="center")
+        await printer.print_qr("https://example.com", caption="Visit Website")
         await printer.feed_mm(10)
 
 asyncio.run(main())
 ```
 
-### Blocking
+### Synchronous API
+
+For scripts that do not run an event loop:
 
 ```python
 import purrint
 
-printer = purrint.connect_sync()          # or connect_sync("MXW01") / connect_sync("AA:BB:...")
-printer.print_image("photo.jpg", gray=True)
-print(printer.refresh_status())
-printer.disconnect()
+# Context manager automatically connects and disconnects
+with purrint.connect_sync() as printer:
+    printer.print_image("photo.jpg", gray=True)
+    status = printer.refresh_status()
+    print("Status:", status)
 
-purrint.quick_print("photo.jpg")                     # connect, print, disconnect
-purrint.quick_print(None, text="Hello!", size=40)
+# Direct one-shot helper
+purrint.quick_print("photo.jpg")
+purrint.quick_print(None, text="Order #1048", size=32)
 ```
 
-### Build your own layout
+### Layout and Custom Receipts
+
+Combine multiple elements into a single contiguous print job:
 
 ```python
-from purrint import render_text, render_qr, render_separator, stack, prepare
+from purrint import render_text, render_qr, render_separator, stack
 
 ticket = stack([
-    render_text("CAFÉ PURR", size=48, bold=True, align="center"),
+    render_text("COFFEE SHOP", size=48, bold=True, align="center"),
     render_separator(style="dashed"),
-    render_text("Latte ......... 3.00\nCookie ........ 1.50", mono=True),
-    render_qr("https://example.com/receipt/42", size=200),
+    render_text("Espresso ........ 2.50\nCroissant ....... 1.80", mono=True),
+    render_separator(style="solid"),
+    render_qr("https://example.com/receipt/1048", size=200),
 ])
+
 await printer.print_raster(ticket)
 ```
 
-`prepare(source, width=384, options=ImageOptions(...))` gives you the exact dithered image before
-printing; `preview(img)` turns it into a paper-like picture for your UI.
+### Exception Handling
 
-### Events and errors
+All library exceptions inherit from `purrint.PurrintError`:
 
 ```python
-unsubscribe = printer.on(lambda kind, payload: print(kind, payload))
-# kinds: status, temperature, buffer_full, buffer_free, firmware, serial, print_done, challenge ...
+import purrint
 
 try:
-    await printer.print_text("hi")
+    with purrint.connect_sync() as printer:
+        printer.print_text("Sample")
 except purrint.OutOfPaperError:
-    print("load paper")
+    print("Error: Printer is out of paper.")
 except purrint.OverheatError:
-    print("let it cool down")
+    print("Error: Thermal head is cooling down.")
 except purrint.PrinterNotFoundError:
-    print("switch it on / disconnect the phone app")
+    print("Error: No printer found. Ensure device is powered on and Bluetooth is active.")
 ```
 
-All purrint errors derive from `purrint.PurrintError`.
+## Supported Hardware
 
-## Supported printers
+Printers are identified by their advertised BLE broadcast name. Case and trailing random suffixes (e.g. `MX10-8A3F`) are handled automatically.
 
-Printers are identified by the name they advertise over Bluetooth (case and spaces are ignored, and
-suffixes like `MX10-8A3F` are understood). Devices that are not listed can still work: purrint probes
-both protocols, or you can force one with `connect(..., family="V5G")`.
+- **V5G Protocol Family (50 Models):**  
+  MX01, MX02, MX03, MX05, MX06, MINI PRINTER, JL-BR22, MX07, MX08, MX09, URBANWORX KIDS CAMERA, CYLO BT PRINTER, MXTP-100, AZ-P2108X, MX10, MX11, MX12, PD01, MINISO-M1, LP212, XO POPPY, MX13, BQ01, BQ02, EWTTO ET-Z0499, BQ05, BQ06, BQ07, BQ7A, BQ7B, BQ08, BQ95, BQ96, MXW009, MXW010, EWTTO ET-N3689, EWTTO ET-N3687, MXPC-100, GV-MA211, KP-IM606, BQ95B, BQ03, BQ95C, BQ06B, X6, K06, BQ17, IM.17, C18, MINISO-M12.
 
-**V5G protocol (50):** MX01, MX02, MX03, MX05, MX06, MINI PRINTER, JL-BR22, MX07, MX08, MX09,
-URBANWORX KIDS CAMERA, CYLO BT PRINTER, MXTP-100, AZ-P2108X, MX10, MX11, MX12, PD01, MINISO-M1, LP212,
-XO POPPY, MX13, BQ01, BQ02, EWTTO ET-Z0499, BQ05, BQ06, BQ07, BQ7A, BQ7B, BQ08, BQ95, BQ96, MXW009,
-MXW010, EWTTO ET-N3689, EWTTO ET-N3687, MXPC-100, GV-MA211, KP-IM606, BQ95B, BQ03, BQ95C, BQ06B, X6,
-K06, BQ17, IM.17, C18, MINISO-M12
+- **V5X Protocol Family / MXW01 Mainboard (57 Models):**  
+  MXW01, X1, X2, C17, MXW-W5, MXW01-1, Portable Printer, Instant Print Plus, REKA, HDMDT-00, JK01, BH03, BHSZY, PD03, FLYINGTIGER097, LP215, KERUI, AI01, M8HZ, HZ-M8, Q15, M13, Q15A, Q15B, Q15C, Q15D, Q15E, Q15Z, STICKERMATE, Q17, MXW13, MXW18, ADQ19, QD01, JME13, JME15, LP28AI, BQTLY, STERENIA-PRINT, LEAPOM, IHEARTYARD, ELECOUTEK, Q25SZY, TCM747736, P4, RS6301985, M13SZY, TK914, TK894, D20, Q20, Q16SZY, OHELLAATP01, Q5, Q6, JME05, Q10.
 
-**V5X protocol – MXW01 board (57):** MXW01, X1, X2, C17, MXW-W5, MXW01-1, Portable Printer,
-Instant Print Plus, REKA, HDMDT-00, JK01, BH03, BHSZY, PD03, FLYINGTIGER097, LP215, KERUI, AI01, M8HZ,
-HZ-M8, Q15, M13, Q15A, Q15B, Q15C, Q15D, Q15E, Q15Z, STICKERMATE, Q17, MXW13, MXW18, ADQ19, QD01, JME13,
-JME15, LP28AI, BQTLY, STERENIA-PRINT, LEAPOM, IHEARTYARD, ELECOUTEK, Q25SZY, TCM747736, P4, RS6301985,
-M13SZY, TK914, TK894, D20, Q20, Q16SZY, OHELLAATP01, Q5, Q6, JME05, Q10
+### Verification Status
 
-### Test status – please read
-
-| | |
+| Category | Details |
 |---|---|
-| ✅ **Tested on hardware** | **MX10** (V5G, firmware 1.0.11): scan, info, status, temperature, text, photos, QR, feed, completion detection – on Windows 10. |
-| 🧪 **Implemented, not yet tested on hardware** | The **V5X / MXW01** protocol (dot and grayscale printing, intensity, status, version, head type, feed, cancel). It is built from the documented protocol and checked byte-for-byte against known command sequences and a full simulator, but nobody has run this release on an MXW01 yet. |
-| ⚠️ **Firmware dependent** | `retract()` (V5G), the `cover_open` flag, battery level on V5G printers (not reported). |
+| **Verified on Hardware** | **MX10** (V5G, firmware 1.0.11): Device discovery, telemetry, text printing, raster images, QR codes, feed operations, and completion synchronization tested on Windows 10. |
+| **Verified via Simulator** | **V5X / MXW01**: Protocol implementation (dot and 4-bit grayscale rasterization, intensity control, head telemetry) verified byte-for-byte against captured traces and protocol specifications. |
+| **Firmware Dependent** | Reverse feeding (`retract`), open-cover sensor reporting, and battery percentages on V5G devices depend on individual firmware revisions. |
 
-If you own a printer from the V5X list, a report (works / doesn't, with `purrint -vv info` output) is
-the most valuable contribution you can make.
+## Platform and Connection Notes
 
-Some firmwares send an authentication challenge (`D6` on V5G, `B3` on V5X) that the vendor apps answer
-with a secret key. purrint does **not** ship that key; printers tested so far print without answering it.
-The `challenge` event tells you if your printer sends one.
-
-## Requirements and tips
-
-- Python 3.9+, Bluetooth Low Energy adapter. Dependencies: [bleak](https://github.com/hbldh/bleak) and Pillow.
-- **The printer must not be connected to a phone** – BLE printers accept one connection at a time and stop
-  advertising while connected.
-- Windows 10/11: works out of the box (no pairing needed).
-- Linux: BlueZ 5.55+; your user needs access to Bluetooth (usually the `bluetooth` group).
-- macOS: grant Bluetooth permission to your terminal/IDE.
-- Paper is 57 mm wide; the head prints 384 dots (48 mm) at 203 dpi, i.e. 8 dots per mm.
-- Long batches: use `cooldown=` / `print_many(..., cooldown=5)` so cheap heads don't overheat.
-
-## How it works (short)
-
-| | V5G (`51 78 …`) | V5X (`22 21 …`) |
-|---|---|---|
-| Channel | `ae01` write, `ae02` notify (or `ff02/ff03`) | `ae01` commands, `ae03` bitmap data, `ae02` notify |
-| Job | density, quality, lattice, energy, mode, speed, **one `A2` frame per line**, feed, lattice end | intensity `A2`, request `A9` → ack, raw bitmap, flush `AD` → done `AA` |
-| Bits | 48 bytes/line, left dot = bit 0 | 48 bytes/line (1-bit) or 192 bytes/line (4-bit gray, left dot = high nibble) |
-| Flow | `AE 10` pause / `AE 00` resume & finished | whole bitmap buffered |
-
-Every frame is `magic, command, 0x00, length (LE16), payload, CRC-8 (poly 0x07) of payload, 0xFF`.
-The `purrint.protocol` package exposes pure, I/O-free encoders/decoders if you want to build your own transport.
+- **Single Host Requirement:** Bluetooth Low Energy printers accept only one active connection at a time. Disconnect mobile applications or phone Bluetooth before connecting from a desktop.
+- **Windows 10/11:** Native support without manual pairing.
+- **Linux:** Requires BlueZ 5.55+ and appropriate permissions (user in `bluetooth` group).
+- **macOS:** Grant Bluetooth permissions to the host terminal or application.
+- **Hardware Specs:** Standard roll width is 57 mm. Print head contains 384 dots (48 mm effective width) at 203 DPI (8 dots/mm).
 
 ## Development
 
 ```bash
-python -m venv .venv && .venv/Scripts/activate      # Windows   (source .venv/bin/activate elsewhere)
+git clone https://github.com/raidenmaister/purrint.git
+cd purrint
+python -m venv .venv
+# Windows: .venv\Scripts\activate | Unix: source .venv/bin/activate
 pip install -e ".[dev]"
-pytest                                                # 50 tests, no hardware needed
+pytest
 ```
-
----
-
-## En español
-
-`purrint` es un paquete de Python para imprimir en las impresoras térmicas Bluetooth baratas (las
-"cat printers": MX10, MX06, MXW01, X1, C17… **107 nombres**) sin la app del fabricante.
-
-```bash
-pip install "purrint[qr]"
-```
-
-```python
-import purrint
-
-with purrint.connect_sync() as impresora:              # la impresora compatible más cercana
-    impresora.print_image("foto.jpg", density=5)        # las fotos horizontales se giran solas
-    impresora.print_text("¡Hola desde Python!", size=36, align="center", bold=True)
-    impresora.print_qr("https://example.com", caption="escanéame")
-    print(impresora.refresh_status())                   # papel, sobrecalentamiento, temperatura…
-```
-
-Desde la terminal: `purrint scan`, `purrint image foto.jpg`, `purrint text "hola"`, `purrint info`.
-Sin impresora puedes probar con `--simulate vista.png` o `purrint.connect_simulated("MX10")`.
-
-**Importante:** apaga el Bluetooth del teléfono (o cierra la app) antes de conectar desde la PC; estas
-impresoras solo aceptan una conexión a la vez. Probado en una MX10 real con Windows 10; la familia V5X
-(MXW01) está implementada y probada con el simulador, pero aún no con hardware real.
 
 ## License
 
-MIT. purrint is an independent, clean-room implementation and is not affiliated with any printer vendor
-or app. All product names are trademarks of their respective owners and are used only to identify
-compatible hardware.
+This project is licensed under the terms of the [MIT License](LICENSE).
+
+All brand names, trademarks, and model numbers are the property of their respective owners and are referenced solely for hardware compatibility purposes.
