@@ -11,6 +11,7 @@
 </h3>
 
 <p align="center">
+  <a href="https://raidenmaister.github.io/purrint/"><img src="https://img.shields.io/badge/docs-GitHub_Pages-blue.svg" alt="Documentation"></a>
   <a href="https://pypi.org/project/purrint/"><img src="https://img.shields.io/pypi/v/purrint.svg" alt="PyPI version"></a>
   <a href="https://pypi.org/project/purrint/"><img src="https://img.shields.io/pypi/pyversions/purrint.svg" alt="Python versions"></a>
   <a href="https://github.com/raidenmaister/purrint/actions/workflows/test.yml"><img src="https://github.com/raidenmaister/purrint/actions/workflows/test.yml/badge.svg" alt="Build Status"></a>

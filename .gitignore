@@ -5,5 +5,7 @@ build/
 dist/
 .venv/
 .pytest_cache/
+site/
 *.png
 !docs/*.png
+!docs/**/*.png

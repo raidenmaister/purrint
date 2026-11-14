@@ -1,0 +1,80 @@
+site_name: purrint
+site_description: High-performance Python driver and CLI for Bluetooth Low Energy thermal printers.
+site_author: raidenmaister
+site_url: https://raidenmaister.github.io/purrint/
+repo_url: https://github.com/raidenmaister/purrint
+repo_name: raidenmaister/purrint
+
+theme:
+  name: material
+  logo: logo.svg
+  favicon: logo.svg
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+            heading_level: 2
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Overview: index.md
+  - Quickstart: quickstart.md
+  - User Guides:
+      - Printing Images & Dithering: guides/images.md
+      - Text & Formatting: guides/text.md
+      - Receipts & QR Codes: guides/receipts.md
+      - Virtual Simulator: guides/simulator.md
+  - Command Line (CLI): cli.md
+  - Hardware & Protocols: hardware.md
+  - API Reference:
+      - Core Printer: reference/printer.md
+      - Imaging & Composition: reference/imaging.md
+      - Hardware Catalog: reference/catalog.md
+      - Exceptions & Status: reference/errors.md
